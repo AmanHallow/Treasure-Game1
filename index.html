@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Lost Treasure Adventure</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Welcome to the Lost Temple Treasure Adventure</h1>
+  <div id="game">
+    <p id="story">Your journey starts now. Which side do you want to go?</p>
+    <div id="choices">
+      <button onclick="choose('left')">Left</button>
+      <button onclick="choose('right')">Right</button>
+      <button onclick="choose('straight')">Straight</button>
+    </div>
+  </div>
+
+  <!-- Sounds -->
+  <audio id="levelSound" src="sounds/level.wav"></audio>
+  <audio id="winSound" src="sounds/win.wav"></audio>
+  <audio id="gameoverSound" src="sounds/gameover.wav"></audio>
+
+  <script>
+    let step = 1;
+
+    function playSound(type) {
+      if(type === 'level') document.getElementById('levelSound').play();
+      if(type === 'win') document.getElementById('winSound').play();
+      if(type === 'gameover') document.getElementById('gameoverSound').play();
+    }
+
+    function choose(option) {
+      const story = document.getElementById('story');
+      const choices = document.getElementById('choices');
+
+      if(step === 1) {
+        if(option === 'left') {
+          playSound('level');
+          story.innerText = "You have successfully cleared the first path. You reached a river. Swim or Jump?";
+          choices.innerHTML = `
+            <button onclick="choose('swim')">Swim</button>
+            <button onclick="choose('jump')">Jump</button>
+          `;
+          step++;
+        } else {
+          playSound('gameover');
+          story.innerText = "Noob! You died. Game Over.";
+          choices.innerHTML = '';
+        }
+      } else if(step === 2) {
+        if(option === 'swim') {
+          playSound('level');
+          story.innerText = "You have crossed the river. You see three doors: Red, Blue, and Gold. Which one?";
+          choices.innerHTML = `
+            <button onclick="choose('red')">Red</button>
+            <button onclick="choose('blue')">Blue</button>
+            <button onclick="choose('gold')">Gold</button>
+          `;
+          step++;
+        } else {
+          playSound('gameover');
+          story.innerText = "You have drowned. Game Over.";
+          choices.innerHTML = '';
+        }
+      } else if(step === 3) {
+        if(option === 'gold') {
+          playSound('level');
+          story.innerText = "You have found the treasure room. Do you want to take all the treasure or some?";
+          choices.innerHTML = `
+            <button onclick="choose('all')">All</button>
+            <button onclick="choose('some')">Some</button>
+          `;
+          step++;
+        } else if(option === 'blue') {
+          playSound('gameover');
+          story.innerText = "Eaten by sharks. Game Over.";
+          choices.innerHTML = '';
+        } else if(option === 'red') {
+          playSound('gameover');
+          story.innerText = "Burned by flames. Game Over.";
+          choices.innerHTML = '';
+        } else {
+          playSound('gameover');
+          story.innerText = "Wrong choice. Game Over.";
+          choices.innerHTML = '';
+        }
+      } else if(step === 4) {
+        if(option === 'some') {
+          playSound('win');
+          story.innerText = "Congratulations! You have won!";
+          choices.innerHTML = '';
+        } else {
+          playSound('gameover');
+          story.innerText = "Don't be greedy! Game Over.";
+          choices.innerHTML = '';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
